@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import listEndpoints from "express-list-endpoints";
 import userRoutes from "./routes/userRoutes.js";
+import courseRoutes from "./routes/courseRoutes.js"; // Assicurati di importare le rotte dei corsi
 
 // MIDDLEWARE Importazione dei middleware per la gestione degli errori
 import { badRequestHandler, unauthorizedHandler, notFoundHandler, genericErrorHandler } from "./middlewares/errorHandlers.js";
@@ -36,6 +37,7 @@ mongoose
 
 // Definizione delle rotte principali
 app.use("/api/users", userRoutes);
+app.use("/api/courses", courseRoutes); // Aggiungi le rotte dei corsi
 
 // Applicazione dei middleware per la gestione degli errori
 app.use(badRequestHandler);
