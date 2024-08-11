@@ -120,7 +120,7 @@ function CourseForm({ show, handleClose, refreshCourses }) {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button className="btn-gold" type="submit">
             Salva Corso
           </Button>
         </Form>

@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import NavigationBar from './components/Navbar.jsx';
 import CourseList from './components/CourseList.jsx';
 import CourseForm from './components/CourseForm.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Jumbotron from './components/Jumbotron.jsx';
+
+
 
 function App() {
   const [show, setShow] = useState(false);
@@ -17,7 +21,9 @@ function App() {
     <div>
       <NavigationBar handleShow={handleShow} /> {/* Passiamo handleShow alla Navbar */}
       <div className="container mt-5">
+        <Jumbotron/>
         <h1>I nostri Corsi</h1>
+
         <CourseList />
         <CourseForm show={show} handleClose={handleClose} refreshCourses={refreshCourses} />
       </div>
