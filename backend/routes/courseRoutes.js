@@ -4,6 +4,11 @@ import express from "express";
 import mongoose from "mongoose";
 import Course from "../models/Course.js";
 import User from "../models/User.js";
+import multer from 'multer';
+import { storage } from '../config/cloudinary.js';
+
+
+const upload = multer({ storage });
 
 const router = express.Router();
 
@@ -30,29 +35,39 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST /courses: crea un nuovo corso
-router.post("/", async (req, res) => {
-  const { titolo, descrizione, prezzo, autore, categoria, immagine } = req.body;
+router.post('/', upload.single('immagine'), async (req, res) => {
+  console.log('Dati ricevuti:', req.body); // Log dei dati ricevuti
+  console.log('File caricato:', req.file); // Log del file caricato
+
+  const { titolo, descrizione, prezzo, autore, categoria } = req.body;
 
   // Verifica se l'ID dell'autore è un ObjectId valido
   if (!mongoose.Types.ObjectId.isValid(autore)) {
-    return res.status(400).json({ message: "ID autore non valido" });
+    return res.status(400).json({ message: 'ID autore non valido' });
   }
 
   try {
     // Verifica se l'autore esiste
     const user = await User.findById(autore);
     if (!user) {
-      return res.status(404).json({ message: "Autore non trovato" });
+      return res.status(404).json({ message: 'Autore non trovato' });
     }
+
+    // Usa l'URL dell'immagine caricato su Cloudinary
+    const immagine = req.file ? req.file.path : null;
 
     const course = new Course({ titolo, descrizione, prezzo, autore, categoria, immagine });
     const newCourse = await course.save();
     res.status(201).json(newCourse);
   } catch (err) {
+    console.error('Errore nella creazione del corso:', err);
     res.status(400).json({ message: err.message });
   }
 });
+
+
+
+
 
 // PUT /courses/:id: modifica un corso esistente
 router.put("/:id", async (req, res) => {

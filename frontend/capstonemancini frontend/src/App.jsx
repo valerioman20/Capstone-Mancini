@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import NavigationBar from './components/Navbar.jsx';
+import CourseList from './components/CourseList.jsx';
+import CourseForm from './components/CourseForm.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const refreshCourses = () => {
+    // Ricarica i corsi dopo l'aggiunta di un nuovo corso
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <NavigationBar handleShow={handleShow} /> {/* Passiamo handleShow alla Navbar */}
+      <div className="container mt-5">
+        <h1>I nostri Corsi</h1>
+        <CourseList />
+        <CourseForm show={show} handleClose={handleClose} refreshCourses={refreshCourses} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

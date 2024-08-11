@@ -13,6 +13,13 @@ import { badRequestHandler, unauthorizedHandler, notFoundHandler, genericErrorHa
 // Carica le variabili d'ambiente dal file .env
 dotenv.config();
 
+// Verifica che le variabili d'ambiente di Cloudinary siano caricate correttamente
+console.log("Cloudinary Config:", {
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 // Controlla se la variabile d'ambiente MONGODB_URI è definita
 if (!process.env.MONGODB_URI) {
   console.error("Errore: la variabile d'ambiente MONGODB_URI non è definita.");
