@@ -29,7 +29,9 @@ function NavigationBar({ handleShow }) {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link href="#courses">Chi siamo</Nav.Link>
+            <Nav.Link as={Link} to="/">Chi siamo</Nav.Link>
+            <Nav.Link as={Link} to="/">Registrati</Nav.Link>
+            <Nav.Link as={Link} to="/">Login</Nav.Link>
           </Nav>
           <Form className="d-flex" onSubmit={handleSearch}>
             <FormControl

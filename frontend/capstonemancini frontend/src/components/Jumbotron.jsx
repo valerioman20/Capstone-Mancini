@@ -21,7 +21,7 @@ function Jumbotron() {
 
       </p>
       <p>
-        <Button className="btn-gold">Learn more</Button>
+        <Button className="btn-gold">Scopri di più</Button>
       </p>
     </Container>
   );
