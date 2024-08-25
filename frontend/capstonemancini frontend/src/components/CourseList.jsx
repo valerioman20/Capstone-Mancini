@@ -26,7 +26,7 @@ function CourseList() {
                   <Card.Title>{course.titolo}</Card.Title>
                   <Card.Text>{course.descrizione}</Card.Text>
                   <Card.Text><strong>Prezzo:</strong> ${course.prezzo}</Card.Text>
-                  <Button variant="primary">Dettagli</Button>
+                  <Button variant="gold">Dettagli</Button>
                 </Card.Body>
               </Link>
             </Card>

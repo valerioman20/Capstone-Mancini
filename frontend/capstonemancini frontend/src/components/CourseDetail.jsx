@@ -43,7 +43,7 @@ function CourseDetail() {
           {/* Accedi alle singole proprietà dell'autore */}
           <Card.Text><strong>Autore:</strong> {course.autore.nome} {course.autore.cognome}</Card.Text>
           <Card.Text><strong>Email dell'autore:</strong> {course.autore.email}</Card.Text>
-          <Button as={Link} to="/" variant="primary">Torna alla lista dei corsi</Button>
+          <Button as={Link} to="/" variant="gold">Torna alla lista dei corsi</Button>
         </Card.Body>
       </Card>
     </Container>

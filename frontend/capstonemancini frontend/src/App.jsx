@@ -18,12 +18,24 @@ function App() {
       <div>
         <NavigationBar handleShow={handleShow} />
         <div className="container mt-5">
-          <Jumbotron />
           <Routes>
-            <Route path="/" element={<CourseList />} />
-            <Route path="/courses/:id" element={<CourseDetail />} /> {/* Rotta per il dettaglio del corso */}
+            {/* Rotta per la pagina principale (home) */}
+            <Route
+              path="/"
+              element={
+                <>
+                  <Jumbotron />
+                  <CourseList />
+                  <CourseForm show={show} handleClose={handleClose} />
+                </>
+              }
+            />
+            {/* Rotta per la pagina di dettaglio del corso */}
+            <Route
+              path="/courses/:id"
+              element={<CourseDetail />}
+            />
           </Routes>
-          <CourseForm show={show} handleClose={handleClose} />
         </div>
       </div>
     </Router>
