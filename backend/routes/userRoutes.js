@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import User from "../models/User.js";
 import Course from "../models/Course.js"; // Importa il modello Course
+import { authMiddleware } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
 
@@ -28,8 +29,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST /users: crea un nuovo utente
-router.post("/", async (req, res) => {
+// POST /users: crea un nuovo utente (protetto da autenticazione)
+router.post("/", authMiddleware, async (req, res) => {  // Aggiungi authMiddleware qui
   const user = new User(req.body);
   try {
     const newUser = await user.save();

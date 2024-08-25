@@ -6,6 +6,8 @@ import Course from "../models/Course.js";
 import User from "../models/User.js";
 import multer from 'multer';
 import { storage } from '../config/cloudinary.js';
+import { authMiddleware } from "../middlewares/authMiddleware.js"; // NEW! middleware di autenticazione
+
 
 
 const upload = multer({ storage });
@@ -34,6 +36,9 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+/* NEW! Proteggi le altre rotte con il middleware di autenticazione
+router.use(authMiddleware); */
 
 router.post('/', upload.single('immagine'), async (req, res) => {
   console.log('Dati ricevuti:', req.body); // Log dei dati ricevuti

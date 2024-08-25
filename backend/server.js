@@ -6,6 +6,7 @@ import cors from "cors";
 import listEndpoints from "express-list-endpoints";
 import userRoutes from "./routes/userRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js"; // Assicurati di importare le rotte dei corsi
+import useRoutes from "./routes/useRoutes.js"; // Importa le rotte di autenticazione
 
 // MIDDLEWARE Importazione dei middleware per la gestione degli errori
 import { badRequestHandler, unauthorizedHandler, notFoundHandler, genericErrorHandler } from "./middlewares/errorHandlers.js";
@@ -44,7 +45,8 @@ mongoose
 
 // Definizione delle rotte principali
 app.use("/api/users", userRoutes);
-app.use("/api/courses", courseRoutes); // Aggiungi le rotte dei corsi
+app.use("/api/courses", courseRoutes); // Rotte dei corsi
+app.use("/api/auth", useRoutes); // Aggiungi le rotte di autenticazione
 
 // Applicazione dei middleware per la gestione degli errori
 app.use(badRequestHandler);
