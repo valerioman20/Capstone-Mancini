@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavigationBar from './components/Navbar.jsx';
 import CourseList from './components/CourseList.jsx';
 import CourseForm from './components/CourseForm.jsx';
+import CourseDetail from './components/CourseDetail.jsx'; // Importa il nuovo componente di dettaglio
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Jumbotron from './components/Jumbotron.jsx';
-
-
 
 function App() {
   const [show, setShow] = useState(false);
@@ -13,21 +13,20 @@ function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const refreshCourses = () => {
-    // Ricarica i corsi dopo l'aggiunta di un nuovo corso
-  };
-
   return (
-    <div>
-      <NavigationBar handleShow={handleShow} /> {/* Passiamo handleShow alla Navbar */}
-      <div className="container mt-5">
-        <Jumbotron/>
-        <h1>I nostri Corsi</h1>
-
-        <CourseList />
-        <CourseForm show={show} handleClose={handleClose} refreshCourses={refreshCourses} />
+    <Router>
+      <div>
+        <NavigationBar handleShow={handleShow} />
+        <div className="container mt-5">
+          <Jumbotron />
+          <Routes>
+            <Route path="/" element={<CourseList />} />
+            <Route path="/courses/:id" element={<CourseDetail />} /> {/* Rotta per il dettaglio del corso */}
+          </Routes>
+          <CourseForm show={show} handleClose={handleClose} />
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 

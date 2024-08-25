@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom'; // Importa Link per la navigazione
 import axios from 'axios';
 
 function CourseList() {
@@ -8,12 +9,10 @@ function CourseList() {
   useEffect(() => {
     axios.get('http://localhost:5002/api/courses')
       .then(response => {
-        console.log('Corsi ricevuti:', response.data);
         setCourses(response.data);
       })
       .catch(error => console.error('Errore nel recupero dei corsi:', error));
   }, []);
-  
 
   return (
     <Container>
@@ -21,20 +20,21 @@ function CourseList() {
         {courses.map(course => (
           <Col md={4} key={course._id} className="mb-4">
             <Card>
-              <Card.Img variant="top" src={course.immagine || 'https://via.placeholder.com/150'} />
-              <Card.Body>
-                <Card.Title>{course.titolo}</Card.Title>
-                <Card.Text>{course.descrizione}</Card.Text>
-                <Card.Text><strong>Prezzo:</strong> ${course.prezzo}</Card.Text>
-                <Button className="btn-gold">Modifica</Button>
-              </Card.Body>
+              <Link to={`/courses/${course._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Card.Img variant="top" src={course.immagine || 'https://via.placeholder.com/150'} />
+                <Card.Body>
+                  <Card.Title>{course.titolo}</Card.Title>
+                  <Card.Text>{course.descrizione}</Card.Text>
+                  <Card.Text><strong>Prezzo:</strong> ${course.prezzo}</Card.Text>
+                  <Button variant="primary">Dettagli</Button>
+                </Card.Body>
+              </Link>
             </Card>
           </Col>
         ))}
       </Row>
     </Container>
   );
-  
 }
 
 export default CourseList;
