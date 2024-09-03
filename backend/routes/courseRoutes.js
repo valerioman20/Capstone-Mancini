@@ -6,7 +6,7 @@ import Course from "../models/Course.js";
 import User from "../models/User.js";
 import multer from 'multer';
 import { storage } from '../config/cloudinary.js';
-import { authMiddleware } from "../middlewares/authMiddleware.js"; // NEW! middleware di autenticazione
+/*import { authMiddleware } from "../middlewares/authMiddleware.js"; // NEW! middleware di autenticazione */
 
 
 
