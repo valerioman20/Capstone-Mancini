@@ -8,3 +8,10 @@
     background-color: #FFC107; 
   }
   
+  .course-detail-img {
+    width: 50%;
+    height: auto;
+    margin: 0 auto;
+    display: block; 
+  }
+  
