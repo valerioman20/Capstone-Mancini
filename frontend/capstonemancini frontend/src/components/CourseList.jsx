@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // Importa Link per la navigazione
+import { Link, useLocation } from 'react-router-dom'; 
 import axios from 'axios';
 
 function CourseList() {
   const [courses, setCourses] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
-    axios.get('http://localhost:5002/api/courses')
-      .then(response => {
-        setCourses(response.data);
-      })
-      .catch(error => console.error('Errore nel recupero dei corsi:', error));
-  }, []);
+    if (location.state?.filteredCourses) {
+      // Mostra i corsi filtrati se presenti nello stato
+      setCourses(location.state.filteredCourses);
+    } else {
+      // Se non ci sono risultati filtrati, carica tutti i corsi
+      axios.get('http://localhost:5002/api/courses')
+        .then(response => {
+          setCourses(response.data);
+        })
+        .catch(error => console.error('Errore nel recupero dei corsi:', error));
+    }
+  }, [location.state]);
 
   return (
     <Container>

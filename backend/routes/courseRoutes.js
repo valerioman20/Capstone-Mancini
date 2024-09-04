@@ -6,20 +6,32 @@ import Course from "../models/Course.js";
 import User from "../models/User.js";
 import multer from 'multer';
 import { storage } from '../config/cloudinary.js';
-/*import { authMiddleware } from "../middlewares/authMiddleware.js"; // NEW! middleware di autenticazione */
-
-
 
 const upload = multer({ storage });
 
 const router = express.Router();
 
-// GET /courses: ritorna la lista di tutti i corsi
+// GET /courses: ritorna la lista di tutti i corsi o filtra per ricerca
 router.get("/", async (req, res) => {
   try {
-    const courses = await Course.find().populate("autore", "nome cognome email");
+    const { search } = req.query; // Ottieni il parametro di ricerca dalla query string
+    console.log('Parametro di ricerca:', search); // Log per debug
+    const query = {};
+
+    // Se c'è una query di ricerca, aggiungi il filtro per il titolo o descrizione
+    if (search) {
+      query.$or = [
+        { titolo: { $regex: search, $options: "i" } }, // Filtra per titolo
+        { descrizione: { $regex: search, $options: "i" } }, // Filtra per descrizione
+      ];
+    }
+
+    // Trova i corsi con il filtro (se esiste) o tutti i corsi
+    const courses = await Course.find(query).populate("autore", "nome cognome email");
+    console.log('Corsi trovati:', courses.length); // Log per debug
     res.json(courses);
   } catch (err) {
+    console.error('Errore durante la ricerca dei corsi:', err); // Log degli errori
     res.status(500).json({ message: err.message });
   }
 });
@@ -37,13 +49,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-/* NEW! Proteggi le altre rotte con il middleware di autenticazione
-router.use(authMiddleware); */
-
+// POST /courses: crea un nuovo corso
 router.post('/', upload.single('immagine'), async (req, res) => {
-  console.log('Dati ricevuti:', req.body); // Log dei dati ricevuti
-  console.log('File caricato:', req.file); // Log del file caricato
-
   const { titolo, descrizione, prezzo, autore, categoria } = req.body;
 
   // Verifica se l'ID dell'autore è un ObjectId valido
@@ -52,13 +59,11 @@ router.post('/', upload.single('immagine'), async (req, res) => {
   }
 
   try {
-    // Verifica se l'autore esiste
     const user = await User.findById(autore);
     if (!user) {
       return res.status(404).json({ message: 'Autore non trovato' });
     }
 
-    // Usa l'URL dell'immagine caricato su Cloudinary
     const immagine = req.file ? req.file.path : null;
 
     const course = new Course({ titolo, descrizione, prezzo, autore, categoria, immagine });
@@ -69,10 +74,6 @@ router.post('/', upload.single('immagine'), async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
-
-
-
 
 // PUT /courses/:id: modifica un corso esistente
 router.put("/:id", async (req, res) => {
@@ -118,3 +119,4 @@ router.delete("/:id", async (req, res) => {
 });
 
 export default router;
+

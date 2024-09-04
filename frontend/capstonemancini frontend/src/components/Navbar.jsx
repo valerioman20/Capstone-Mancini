@@ -1,18 +1,33 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Navbar, Nav, Container, Button, Form, FormControl } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logocorso.svg'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faShoppingCart } from '@fortawesome/free-solid-svg-icons'; // Importa l'icona del carrello
-import { CartContext } from './CartContext.jsx'; // Assicurati che il percorso sia corretto
+import { faPlus, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { CartContext } from './CartContext.jsx';
+import axios from 'axios';
 
 function NavigationBar({ handleShow }) {
-  const { cart } = useContext(CartContext); // Usa il contesto del carrello per accedere al numero di articoli
+  const { cart } = useContext(CartContext);
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearch = (event) => {
+  const handleSearch = async (event) => {
     event.preventDefault();
-    const query = event.target.elements.search.value;
-    console.log("Ricerca per:", query);
+    
+    if (searchQuery.trim() === '') {
+      alert('Inserisci un termine di ricerca');
+      return;
+    }
+
+    try {
+      // Effettua la richiesta di ricerca al backend con il parametro search
+      const response = await axios.get(`http://localhost:5002/api/courses?search=${encodeURIComponent(searchQuery)}`);
+      const filteredCourses = response.data;
+      navigate('/', { state: { filteredCourses } });
+    } catch (error) {
+      console.error('Errore nella ricerca:', error);
+    }
   };
 
   return (
@@ -42,6 +57,8 @@ function NavigationBar({ handleShow }) {
               className="me-2"
               aria-label="Cerca"
               name="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)} // Gestisce il cambiamento dell'input
             />
             <Button variant="outline-light" type="submit">Cerca</Button>
           </Form>
